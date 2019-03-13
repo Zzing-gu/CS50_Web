@@ -2,6 +2,7 @@
 # CS50 Web Project0  :  Korean cold noodle restaurants info website
 
 Informations about Korean Cold Noodle
+https://zzing-gu.github.io/CS50_Web/
 
 ## Directory
 index.html routes to HTML files in HTML folder.
