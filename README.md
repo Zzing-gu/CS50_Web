@@ -6,7 +6,7 @@ Informations about Korean Cold Noodle
 ## Directory
 index.html routes to HTML files in HTML folder.
 
-Two CSS files are in CSS folder.  index.css is pure CSS   ,   app.css is from app.scss
+Two CSS files are in CSS folder.  index.css is pure CSS   ,   app.scss is made of SASS
 
 Images are in Resource folder.
 
