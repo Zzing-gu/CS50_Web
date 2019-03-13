@@ -1,18 +1,132 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>My Webpage</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="CSS\index.css">
+    <link rel="stylesheet" href="CSS\app.css">
 </head>
+
 <body>
-    <div>Hello , World!</div>
-    <div>Hello , World2222!</div>
-    <div>rock the world!</div>
-    <div>love the world!</div>
-    <div>rebase check</div>
-    <div>Sign Off check</div>
+
+    
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <a class="navbar-brand" href="#">Naengmyeon</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="HTML\html1.html">Uraeok</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="HTML\html2.html">Pildongmyeon-og</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="HTML\html3.html">Bongpiyang</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="HTML\html4.html">Eulmildae</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+
+
+    <div id='title'>Best Naengmyeon Restaurants in S.Korea.<a href="https://en.wikipedia.org/wiki/Naengmyeon">What is
+            Naengmyeon?</a> </div>
+
+
+    <div class="container2">
+
+
+
+        <div class="row">
+            <a href="HTML\html1.html">
+                <div class="box col-lg-3 col-sm">
+                    <img class="image" src="Resource\ureokmain.jpg" alt="">
+                    <div class="middle">
+                        <div class="text">Uraeok</div>
+                    </div>
+                </div>
+            </a>
+            <a href="HTML\html2.html">
+                <div class="box col-lg-3 col-sm">
+                    <img class="image" src="Resource\pildong2.jpg" alt="">
+                    <div class="middle">
+                        <div class="text">Pildongmyeon</div>
+                    </div>
+                </div>
+            </a>
+            <a href="HTML\html3.html">
+                <div class="box col-lg-3 col-sm">
+                    <img class="image" src="Resource\bongpi.jpg" alt="">
+                    <div class="middle">
+                        <div class="text">Bongpiyang</div>
+                    </div>
+                </div>
+            </a>
+            <a href="HTML\html4.html">
+                <div class="box col-lg-3 col-sm">
+                    <img class="image" src="Resource\ulmil.jpg" alt="">
+                    <div class="middle">
+                        <div class="text">Eulmildae</div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+<!-- Uraeok, Seongdong-dong, Eulji house, Seonbang sheep, Eulimdae -->
+    <section>
+
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Time</th>
+                <th>Parking</th>
+            </tr>
+            <tr class='t1'>
+                <td>우레옥 (Uraeok)</td>
+                <td>서울시 중구 주교동 118-1</td>
+                <td>11:30~21:30 (Monday off)</td>
+                <td>O</td>
+            </tr>
+            <tr class='t2'>
+                <td>필동면옥 (Pildongmyeon)</td>
+                <td>서울시 중구 필동3가 1-5</td>
+                <td>11:00~21:00 (2 , 4th Sunday off)</td>
+                <td>O</td>
+            </tr>
+            <tr class='t3'>
+                <td>봉피양 (Bongpiyang)</td>
+                <td>서울시 송파구 방이동 205-8(방이동 본점)</td>
+                <td>11:00~21:30</td>
+                <td>X</td>
+            </tr>
+            <tr class='t4'>
+                <td>을밀대 (Eulmildae)</td>
+                <td>서울시 마포구 염리동 147-6</td>
+                <td>11:00~22:00 (Holiday off)</td>
+                <td>O</td>
+            </tr>
+        </table>
+    </section>
+
+
+
+
+
 
 </body>
+
 </html>
