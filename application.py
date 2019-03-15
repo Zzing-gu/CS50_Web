@@ -5,6 +5,8 @@ from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
+import requests
+
 app = Flask(__name__)
 
 # Check for environment variable
@@ -24,3 +26,9 @@ db = scoped_session(sessionmaker(bind=engine))
 @app.route("/")
 def index():
     return "Project 1: TODO!!"
+
+@app.route("/test")
+def test():
+    res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "rVnBIHaIh3RN7KTzjojxA", "isbns": "9781632168146"})
+    print(res.json())
+    return "test!!"
