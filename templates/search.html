@@ -1,0 +1,35 @@
+
+{% extends "layout.html" %}
+
+{% block title %}
+    Index
+{% endblock %}
+
+{% block style %}
+    .search {
+        padding : 100px;
+        width: 300px;
+    }
+{% endblock %}
+
+{% block body %}
+    <form action="{{ url_for('search') }}" method="POST" class="search">
+
+        <div class="container">search Page!!! {{session['user_id']}}</div>
+        <input style="width:300px" name="search" type="text" placeholder="book's ISBN , Title, Author , Year">
+        <button>Search</button>
+    </div>
+
+
+    <h1>Books</h1>
+
+    <ul style="width:1000px">
+        {% for book in books %}
+            <li>
+               
+                    {{ book.isbn }} to {{ book.title }} {{ book.author }} to {{ book.year }}
+                
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

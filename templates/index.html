@@ -1,0 +1,33 @@
+
+
+{% extends "layout.html" %}
+
+{% block title %}
+    Index
+{% endblock %}
+
+{% block style %}
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 48px;
+}
+
+.box {
+    flex-direction: column;
+    align-items: center;
+    margin: 100px;
+}
+
+.login {
+    justify-content: flex-end;
+    flex: 4;
+}
+
+{% endblock %}
+
+{% block body %}
+    <div>index!! and you are logged in! {{session['user_id']}}</div>
+{% endblock %}
