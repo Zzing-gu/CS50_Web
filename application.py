@@ -77,7 +77,7 @@ def search():
     search = request.form.get("search")
     print(search)
     newsearch = '%' + search + '%'
-    books = db.execute("SELECT * FROM books WHERE title::text LIKE :search " , {"search" : newsearch})
+    books = db.execute("SELECT * FROM books WHERE isbn::text LIKE :search OR  title::text LIKE :search OR  author::text LIKE :search " , {"search" : newsearch})
     print(books)
     #books= [1,2,3]
     return render_template('search.html', books=books)
