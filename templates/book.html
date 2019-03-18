@@ -15,6 +15,13 @@
     align-items: center;
     
 }
+
+.container div {
+    font-size: 30px;
+    margin: 20px;
+}
+
+
     
 {% endblock %}
 
@@ -41,6 +48,12 @@
             <div>TITLE :  {{ book.title }} </div>
             <div>AUTHOR : {{ book.author }}</div>
             <div>YEAR : {{ book.year }}</div>
+
+            <form action="{{ url_for('review' , isbn=book.isbn) }}" method="POST">
+
+                <textarea name="review"  cols="30" rows="10" placeholder="write a review"></textarea>
+                <button>Submit</button>
+            </form>
     </div>
     
     

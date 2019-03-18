@@ -89,3 +89,16 @@ def book(isbn):
 
     book = db.execute("SELECT * FROM books WHERE isbn = :isbn" , {"isbn" : isbn}).fetchone()
     return render_template('book.html', book=book)
+
+
+
+@app.route("/review/<string:isbn>" , methods=["GET" , "POST"])
+def review(isbn):
+    review = request.form.get("review")
+    book = db.execute("SELECT * FROM books WHERE isbn = :isbn" , {"isbn" : isbn}).fetchone()
+
+    db.execute("INSERT INTO reviews (isbn , title , review) VALUES (:isbn, :title, :review)" ,
+        {"isbn":book.isbn, "title":book.title, "review":review})
+    db.commit()
+    #book = db.execute("SELECT * FROM books WHERE isbn = :isbn" , {"isbn" : isbn}).fetchone()
+    return 'sent'
