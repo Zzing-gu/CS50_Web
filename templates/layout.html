@@ -27,10 +27,13 @@
                                         class="material-icons mdc-top-app-bar__navigation-icon--unbounded">menu</button><span
                                         class="mdc-top-app-bar__title">San Francisco, CA</span> </section>
                         <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
-                                <button class=" mdc-top-app-bar__action-item--unbounded"
-                                        aria-label="Download">Login/Register</button>
-                                <button class="mdc-top-app-bar__action-item--unbounded"
-                                        aria-label="Print this page">Logout</button>
+
+                                      
+                                        <a href="{{ url_for('logout') }}"><button class="mdc-top-app-bar__action-item--unbounded"
+                                                aria-label="Print this page">Logout</button></a>
+                                      
+                                
+                                
 
                         </section>
                 </div>

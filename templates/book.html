@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Book
+{% endblock %}
+
+{% block style %}
+
+.container {
+    display : flex;
+    width: 100%;
+    
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+}
+    
+{% endblock %}
+
+{% block body %}
+   
+
+
+    <h1>Book</h1>
+
+    <!-- <ul style="width:1000px">
+        {% for book in books %}
+            <li>
+               
+                    {{ book.isbn }} to {{ book.title }} {{ book.author }} to {{ book.year }}
+                
+            </li>
+        {% endfor %}
+    </ul> -->
+
+
+    <div class="container">
+
+            <div>ISBN  :   {{ book.isbn }}</div>
+            <div>TITLE :  {{ book.title }} </div>
+            <div>AUTHOR : {{ book.author }}</div>
+            <div>YEAR : {{ book.year }}</div>
+    </div>
+    
+    
+     
+{% endblock %}
