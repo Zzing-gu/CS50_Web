@@ -1,6 +1,7 @@
 import os
+import requests
 
-from flask import Flask, session , render_template , request , redirect
+from flask import Flask, session , render_template , request , redirect ,jsonify
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -89,7 +90,11 @@ def book(isbn):
 
     book = db.execute("SELECT * FROM books WHERE isbn = :isbn" , {"isbn" : isbn}).fetchone()
     reviews = db.execute("SELECT * FROM reviews WHERE isbn = :isbn" , {"isbn" : isbn}).fetchall()
-    return render_template('book.html', book=book , reviews=reviews)
+    res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "rVnBIHaIh3RN7KTzjojxA", "isbns": isbn})
+    goodreads=res.json()
+    print(goodreads['books'])
+    goodreads_book=goodreads['books'][0]
+    return render_template('book.html', book=book , reviews=reviews, goodreads_book=goodreads_book)
 
 
 
@@ -114,3 +119,28 @@ def review(user_id):
     db.commit()
     #book = db.execute("SELECT * FROM books WHERE isbn = :isbn" , {"isbn" : isbn}).fetchone()
     return 'You can sumbit your review only once'
+
+
+
+@app.route("/api/<string:isbn>")
+def api(isbn):
+    """Return details about a single flight."""
+    # Make sure flight exists.
+    book = db.execute("SELECT * FROM books WHERE isbn = :isbn" , {"isbn" : isbn}).fetchone()
+    if book is None:
+        return jsonify({"error 404": "Invalid ISBN"}), 404
+
+    res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "rVnBIHaIh3RN7KTzjojxA", "isbns": isbn})
+    goodreads=res.json()
+    goodreads_book=goodreads['books'][0]
+
+    
+
+    return jsonify({
+            "title": book.title,
+            "author": book.author,
+            "year": book.year,
+            "isbn": book.isbn,
+            "review_count":goodreads_book['work_ratings_count'],
+            "average_score":goodreads_book['average_rating']
+        })
