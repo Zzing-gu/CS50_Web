@@ -1,61 +1,75 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Book
+Book
 {% endblock %}
 
 {% block style %}
 
 .container {
-    display : flex;
-    width: 100%;
-    
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    
+display : flex;
+width: 100%;
+
+flex-direction: column;
+justify-content: center;
+align-items: center;
+
 }
 
 .container div {
-    font-size: 30px;
-    margin: 20px;
+font-size: 30px;
+margin: 20px;
 }
 
 
-    
+
 {% endblock %}
 
 {% block body %}
-   
 
 
-    <h1>Book</h1>
 
-    <!-- <ul style="width:1000px">
-        {% for book in books %}
-            <li>
-               
-                    {{ book.isbn }} to {{ book.title }} {{ book.author }} to {{ book.year }}
-                
-            </li>
+<h1>Reviews</h1>
+
+
+<div class="container">
+
+    <div>ISBN : {{ book.isbn }}</div>
+    <div>TITLE : {{ book.title }} </div>
+    <div>AUTHOR : {{ book.author }}</div>
+    <div>YEAR : {{ book.year }}</div>
+
+
+    <h1>Reviews</h1>
+
+    <ul style="width:1000px">
+        {% for review in reviews %}
+        <li>
+
+            Rating : {{ review.rating }} / By {{ review.user_id }}  /       {{ review.review }}
+
+        </li>
         {% endfor %}
-    </ul> -->
+    </ul>
+
+    <form action="{{ url_for('review' , user_id=session['user_id']) }}" method="POST">
+
+        <h2>Rating</h2>
+        <input type="hidden" name="isbn" value="{{ book.isbn }}">
+        <select style="display:block" name="rating">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="4">5</option>
+        </select>
 
 
-    <div class="container">
+        <textarea name="review" cols="30" rows="10" placeholder="write a review"></textarea>
+        <button>Submit</button>
+    </form>
+</div>
 
-            <div>ISBN  :   {{ book.isbn }}</div>
-            <div>TITLE :  {{ book.title }} </div>
-            <div>AUTHOR : {{ book.author }}</div>
-            <div>YEAR : {{ book.year }}</div>
 
-            <form action="{{ url_for('review' , isbn=book.isbn) }}" method="POST">
 
-                <textarea name="review"  cols="30" rows="10" placeholder="write a review"></textarea>
-                <button>Submit</button>
-            </form>
-    </div>
-    
-    
-     
 {% endblock %}

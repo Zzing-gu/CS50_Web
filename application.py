@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, session , render_template , request
+from flask import Flask, session , render_template , request , redirect
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -88,17 +88,29 @@ def search():
 def book(isbn):
 
     book = db.execute("SELECT * FROM books WHERE isbn = :isbn" , {"isbn" : isbn}).fetchone()
-    return render_template('book.html', book=book)
+    reviews = db.execute("SELECT * FROM reviews WHERE isbn = :isbn" , {"isbn" : isbn}).fetchall()
+    return render_template('book.html', book=book , reviews=reviews)
 
 
 
-@app.route("/review/<string:isbn>" , methods=["GET" , "POST"])
-def review(isbn):
+@app.route("/review/<string:user_id>" , methods=["GET" , "POST"])
+def review(user_id):
+    isbn = request.form.get("isbn")
+    rating = request.form.get("rating")
     review = request.form.get("review")
     book = db.execute("SELECT * FROM books WHERE isbn = :isbn" , {"isbn" : isbn}).fetchone()
 
-    db.execute("INSERT INTO reviews (isbn , title , review) VALUES (:isbn, :title, :review)" ,
-        {"isbn":book.isbn, "title":book.title, "review":review})
+
+    user = db.execute("SELECT * FROM reviews WHERE isbn=:isbn AND user_id=:user_id" , {"isbn":isbn,"user_id":user_id }).fetchone()
+
+    if user is None :
+        db.execute("INSERT INTO reviews (isbn , user_id ,title , rating ,review) VALUES (:isbn,:user_id ,:title,:rating ,:review)" ,
+            {"isbn":book.isbn,"user_id":user_id ,"title":book.title,"rating":rating ,"review":review})
+        db.commit()
+        return redirect('/book/'+isbn)
+
+    
+
     db.commit()
     #book = db.execute("SELECT * FROM books WHERE isbn = :isbn" , {"isbn" : isbn}).fetchone()
-    return 'sent'
+    return 'You can sumbit your review only once'
