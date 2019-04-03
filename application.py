@@ -8,22 +8,32 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 socketio = SocketIO(app)
 
-votes = {"yes": 0, "no": 0, "maybe": 0}
+channels = {"yes": [], "no": [], "maybe": []}
 
 
 @app.route("/")
 def index():
-    return render_template("index.html", votes=votes)
+    return render_template("index.html", channels=channels)
 
 
-@socketio.on("submit vote")
-def vote(data):
-    selection = data["selection"]
-    votes[selection] += 1
-    emit("vote totals", votes, broadcast=True)
+def error(message):
+    return  message   
+
+
+@app.route("/create/<string:chname>")
+def create(chname):
+    
+    if chname in channels:
+        error('already exist channel name!')
+        return jsonify({"error ": "channel name already exist"}), 404
+    else:
+        channels[chname] = []
+        print(channels)
+    return index()
+
 
 
 @socketio.on("send text")
-def vote(data):
+def text(data):
     text = data["text"]
     emit("announce text", {"text": text}, broadcast=True)

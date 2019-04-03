@@ -24,6 +24,15 @@
 
         document.addEventListener('DOMContentLoaded', () => {
 
+            var userName = window.localStorage.getItem('userName')
+            if(userName){
+
+            } else {
+                var newUserName = prompt('type display User Name');
+                window.localStorage.setItem('userName', newUserName)
+                userName = newUserName
+            }
+
             // Get the input field
             var input = document.getElementById("myInput");
             var btn = document.getElementById("myBtn")
@@ -61,7 +70,7 @@
             // When a new vote is announced, add to the unordered list
             socket.on('announce text', data => {
                 const li = document.createElement('li');
-                li.innerHTML = `text recorded: ${data.text}`;
+                li.innerHTML = `${userName}: ${data.text}`;
                 document.querySelector('#texts').append(li);
             })
         })
