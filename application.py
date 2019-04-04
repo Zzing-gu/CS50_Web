@@ -8,8 +8,8 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 socketio = SocketIO(app)
 
-channels = {"yes": [], "no": [], "maybe": []}
-
+channels = {"yes": [1,2,3], "no": [1,2,3], "maybe": [1,2,3]}
+selected = ''
 
 @app.route("/")
 def index():
@@ -19,12 +19,16 @@ def index():
 def error(message):
     return  message   
 
+@app.route("/select/<string:channel>")
+def select(channel):
+    selected = channel
+    return render_template("index.html", channels=channels , selected=selected)
 
-@app.route("/create/<string:chname>")
-def create(chname):
-    
+@app.route("/create" , methods=["POST"])
+def create():
+    chname = request.form.get("channelname")
     if chname in channels:
-        error('already exist channel name!')
+        
         return jsonify({"error ": "channel name already exist"}), 404
     else:
         channels[chname] = []

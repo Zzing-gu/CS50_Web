@@ -8,20 +8,40 @@
 </head>
 
 <body>
-    <ul id="texts">
+    <h1>Channel List</h1>
+    <ul id="chlist">
+            {% for channel in channels %}
+            <li>
+                    <a href='{{ url_for("select" ,select=channel)  }}' >
 
+                        {{channel}}
+                    </a>
+                
+            </li>
+        {% endfor %}
+    </ul>
+    <h1>Chat</h1>
+    <ul id="texts">
+            
     </ul>
     
     <hr>
     
     <input id="myInput" type="text" name="test">
-    <button id="myBtn" data-vote='send'>Send</button>
+    <button id="myBtn" >Send</button>
+
+        <form action='{{ url_for("create")  }}' method="post">
+            <input id="chinput" name="channelname" type="text">
+            <button id="cc" >Create Channel</button>
+        </form>
+
+    
 
 
 
 
     <script>
-
+        //flask run --no-reload
         document.addEventListener('DOMContentLoaded', () => {
 
             var userName = window.localStorage.getItem('userName')
@@ -48,8 +68,13 @@
                 }
             });
 
+            var ccBtn = document.getElementById("cc");
+            var d = new Date();
 
 
+            ccBtn.onclick = () => {
+                
+            }
             
 
             // Connect to websocket
@@ -65,12 +90,14 @@
                 }
 
 
+
+
             });
 
-            // When a new vote is announced, add to the unordered list
+            
             socket.on('announce text', data => {
                 const li = document.createElement('li');
-                li.innerHTML = `${userName}: ${data.text}`;
+                li.innerHTML = `${userName} : ${data.text} //  ${d}`;
                 document.querySelector('#texts').append(li);
             })
         })
