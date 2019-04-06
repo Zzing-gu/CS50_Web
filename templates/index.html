@@ -3,39 +3,39 @@
 
 <head>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
-    
+
     <title>Vote</title>
 </head>
 
 <body>
     <h1>Channel List</h1>
     <ul id="chlist">
-            {% for channel in channels %}
-            <li>
-                    <a href='{{ url_for("select" ,select=channel)  }}' >
+        {% for channel in channels %}
+        <li>
+            <a class='chname' data-name={{channel}} href='{{ url_for("select" ,channel=channel)  }}' >
 
-                        {{channel}}
-                    </a>
-                
-            </li>
+                {{channel}}
+            </a>
+
+        </li>
         {% endfor %}
     </ul>
     <h1>Chat</h1>
     <ul id="texts">
-            
+        
     </ul>
-    
+
     <hr>
-    
+
     <input id="myInput" type="text" name="test">
-    <button id="myBtn" >Send</button>
+    <button id="myBtn">Send</button>
 
-        <form action='{{ url_for("create")  }}' method="post">
-            <input id="chinput" name="channelname" type="text">
-            <button id="cc" >Create Channel</button>
-        </form>
+    <form action='{{ url_for("create")  }}' method="post">
+        <input id="chinput" name="channelname" type="text">
+        <button id="cc">Create Channel</button>
+    </form>
 
-    
+
 
 
 
@@ -44,14 +44,36 @@
         //flask run --no-reload
         document.addEventListener('DOMContentLoaded', () => {
 
+
+            var channels = JSON.parse('{{ channels | tojson | safe}}');
+            console.log(channels)
+
+            var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+            
             var userName = window.localStorage.getItem('userName')
-            if(userName){
+            if (userName) {
 
             } else {
                 var newUserName = prompt('type display User Name');
                 window.localStorage.setItem('userName', newUserName)
                 userName = newUserName
             }
+
+            var channelName = window.localStorage.getItem('channelName')
+            if (channelName) {
+                //socket.emit('back to channel', chname=channelName);
+
+                channels[channelName].map((item, index) => {
+
+                const li = document.createElement('li');
+                li.innerHTML = item
+                document.querySelector('#texts').append(li);
+                })
+            } else {
+                document.querySelector('#texts').append(li).innerHTML = 'Select a channel to chat '
+            }
+
+
 
             // Get the input field
             var input = document.getElementById("myInput");
@@ -69,37 +91,51 @@
             });
 
             var ccBtn = document.getElementById("cc");
-            var d = new Date();
+            var d = new Date().toLocaleString('en-US', { timeZone: 'Asia/Jakarta' });
 
 
             ccBtn.onclick = () => {
-                
+
             }
-            
+
 
             // Connect to websocket
-            var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+            
 
             // When connected, configure buttons
             socket.on('connect', () => {
 
-                
+
 
                 btn.onclick = () => {
-                    socket.emit('send text', { 'text': input.value });
+                    socket.emit('send text', { 'text': `${userName} : ${input.value} //  ${d}` , 'chname':window.localStorage.getItem('channelName') });
                 }
+                var aarr = document.querySelectorAll(".chname")
+                console.log(aarr)
+               
 
-
+                for (let index = 0; index < aarr.length; index++) {
+                    aarr[index].onclick = () => {
+                        console.log('hihihihi')
+                        window.localStorage.setItem('channelName' , aarr[index].dataset.name) 
+                    }
+                }
 
 
             });
 
-            
+
             socket.on('announce text', data => {
                 const li = document.createElement('li');
-                li.innerHTML = `${userName} : ${data.text} //  ${d}`;
+                li.innerHTML = data.text
                 document.querySelector('#texts').append(li);
+
+                
             })
+
+
+
+            
         })
     </script>
 </body>
