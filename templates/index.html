@@ -34,6 +34,7 @@
         <input id="chinput" name="channelname" type="text">
         <button id="cc">Create Channel</button>
     </form>
+    <button id="anonybtn">Anonymous</button>
 
 
 
@@ -90,12 +91,17 @@
                 }
             });
 
-            var ccBtn = document.getElementById("cc");
+            var anonybtn = document.getElementById("anonybtn");
             var d = new Date().toLocaleString('en-US', { timeZone: 'Asia/Jakarta' });
 
 
-            ccBtn.onclick = () => {
+            anonybtn.onclick = () => {
+                if(userName ==="Anonymous"){
+                    userName = window.localStorage.getItem('userName')
+                }else{
 
+                userName = "Anonymous";
+                }
             }
 
 
