@@ -37,6 +37,10 @@ def login_view(request):
     context = {'hihi':9999}
     return render(request, 'orders/login.html', context)
 
+def menu_view(request):
+    context = {'hihi':9999}
+    return render(request, 'orders/menu.html', context)
+
 def login_action(request):
     username = request.POST["username"]
     password = request.POST["password"]
