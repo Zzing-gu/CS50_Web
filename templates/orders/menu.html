@@ -12,8 +12,8 @@
 
     .box {
       background-color: white;
-      width: 200px;
-      height: 200px;
+      width: 400px;
+      {% comment %} height: 200px; {% endcomment %}
       text-align: center;
       opacity: 0.5;
       
@@ -24,11 +24,60 @@
   <main>
     
 <div class="box">
+<h1>Menu</h1>
+<h2>Regular Pizza</h2>
+<ul>
+{% for pizza in Regular_Pizza %}
+    <li>{{ pizza.name }}</li>
+{% endfor %}
+</ul>
+<h2>Sicilian Pizza</h2>
+<ul>
+{% for pizza in Sicilian_Pizza %}
+    <li>{{ pizza.name }}</li>
+{% endfor %}
+</ul>
+<h2>Toppings</h2>
+<ul>
+{% for topping in Toppings %}
+    <li>{{ topping.name }}</li>
+{% endfor %}
+</ul>
+<h2>Subs</h2>
+<ul>
 
-menu
+{% for Sub in Subs %}
+    <li>{{ Sub.name }}</li>
+{% endfor %}
+</ul>
+<h2>Pasta</h2>
+<ul>
+
+{% for Pasta in Pasta %}
+    <li>{{ Pasta.name }}</li>
+{% endfor %}
+</ul>
+<h2>Salads</h2>
+<ul>
+
+{% for Salad in Salads %}
+    <li>{{ Salad.name }}</li>
+{% endfor %}
+</ul>
+<h2>Dinner_Platters</h2>
+<ul>
+
+{% for Dinner_platter in Dinner_Platters %}
+    <li>{{ Dinner_platter.name }}</li>
+{% endfor %}
+</ul>
 </div>
 
-
+  <script type="text/javascript">
+  console.log('hhihih')
+  //var a =
+  //console.log( {{ hihi }})
+  </script>
   </main>
 </body>
 </html>

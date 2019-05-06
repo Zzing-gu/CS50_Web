@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-from .models import Regular_Pizza
+from orders.models import Regular_Pizza , Sicilian_Pizza, Toppings, Subs, Pasta, Salads, Dinner_Platters
 
 # Create your views here.
 #def index(request):
@@ -17,11 +17,16 @@ from .models import Regular_Pizza
 
 def menu_view(request):
 
-    r = Regular_Pizza.objects.all()
+    rp = Regular_Pizza.objects.all()
+    sp = Sicilian_Pizza.objects.all()
+    tp = Toppings.objects.all()
+    sb = Subs.objects.all()
+    ps = Pasta.objects.all()
+    sl = Salads.objects.all()
+    dp = Dinner_Platters.objects.all()
 
+    
 
-    print(r)
-
-    context = {'hihi':r}
+    context = {'Regular_Pizza':rp,  'Sicilian_Pizza':sp, 'Toppings':tp, 'Subs':sb, 'Pasta':ps, 'Salads':sl, 'Dinner_Platters':dp}
     return render(request, 'orders/menu.html', context)
 
