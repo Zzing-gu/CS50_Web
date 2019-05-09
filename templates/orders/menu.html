@@ -69,6 +69,9 @@
 
 {% for Dinner_platter in Dinner_Platters %}
     <li>{{ Dinner_platter.name }}</li>
+    <span>S : <button class='orderBtn' data-size='small' data-name="{{Dinner_platter.name}}">{{Dinner_platter.small}}</button></span> 
+    <span>L : <button class='orderBtn' data-size='large' data-name="{{Dinner_platter.name}}">{{Dinner_platter.large}}</button></span> 
+    
 {% endfor %}
 </ul>
 </div>
@@ -77,6 +80,24 @@
   console.log('hhihih')
   //var a =
   //console.log( {{ hihi }})
+
+  var shoppingCart;
+
+
+  window.onload = () => {
+    console.log('loaded')
+
+    var btns = document.querySelectorAll(".orderBtn")
+    console.log(btns)
+    btns.forEach((item, index)=>{
+      console.log(item);
+      item.addEventListener('click',()=>{
+        console.log('clicked')
+        console.log(item.dataset.name)
+        console.log(item.dataset.size)   
+      })
+    })
+  }
   </script>
   </main>
 </body>
