@@ -30,3 +30,17 @@ def menu_view(request):
     context = {'Regular_Pizza':rp,  'Sicilian_Pizza':sp, 'Toppings':tp, 'Subs':sb, 'Pasta':ps, 'Salads':sl, 'Dinner_Platters':dp}
     return render(request, 'orders/menu.html', context)
 
+
+def menu_order(request):
+
+    print('hihihi')
+    menus = request.POST['menus']
+    topping = request.POST['topping']
+    price = request.POST['price']
+    print(menus)
+    print(topping)
+    print(price)
+
+
+    
+    return menu_view(request)

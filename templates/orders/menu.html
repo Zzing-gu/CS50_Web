@@ -3,11 +3,16 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Home</title>
+  <title>CS50 Pizza</title>
   <style>
     body {
       background-image: url("http://www.baltana.com/files/wallpapers-5/Pizza-Best-Wallpaper-15278.jpg");
       background-color: #cccccc;
+      
+    }
+    #flex-container {
+      display:flex;
+      flex-direction: row;
     }
 
     .box {
@@ -15,32 +20,50 @@
       width: 400px;
       {% comment %} height: 200px; {% endcomment %}
       text-align: center;
-      opacity: 0.5;
+      opacity: 0.7;
+      flex: 2;
+      
+    }
+    .box2 {
+      margin-left: 100px;
+      flex: 1;
+      background-color: white;
+      width: 400px;
+      {% comment %} height: 200px;  {% endcomment %}
+      text-align: center;
+      opacity: 0.7;
       
     }
   </style>
 </head>
 <body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <main>
     
+<div id="flex-container">
 <div class="box">
 <h1>Menu</h1>
 <h2>Regular Pizza</h2>
 <ul>
 {% for pizza in Regular_Pizza %}
     <li>{{ pizza.name }}</li>
+    <span>S : <button class='orderBtn' data-size='small' data-name="{{pizza.name}}" data-price={{pizza.small}}>{{pizza.small}}</button></span> 
+    <span>L : <button class='orderBtn' data-size='large' data-name="{{pizza.name}}" data-price={{pizza.large}}>{{pizza.large}}</button></span> 
 {% endfor %}
 </ul>
 <h2>Sicilian Pizza</h2>
 <ul>
 {% for pizza in Sicilian_Pizza %}
     <li>{{ pizza.name }}</li>
+    <span>S : <button class='orderBtn' data-size='small' data-name="{{pizza.name}}" data-price={{pizza.small}}>{{pizza.small}}</button></span> 
+    <span>L : <button class='orderBtn' data-size='large' data-name="{{pizza.name}}" data-price={{pizza.large}}>{{pizza.large}}</button></span> 
 {% endfor %}
 </ul>
 <h2>Toppings</h2>
 <ul>
 {% for topping in Toppings %}
     <li>{{ topping.name }}</li>
+    <button class='toppingBtn' data-name="{{topping.name}}">Add</button>
 {% endfor %}
 </ul>
 <h2>Subs</h2>
@@ -48,6 +71,8 @@
 
 {% for Sub in Subs %}
     <li>{{ Sub.name }}</li>
+    <span>S : <button class='orderBtn' data-size='small' data-name="{{Sub.name}}" data-price={{Sub.small}}>{{Sub.small}}</button></span> 
+    <span>L : <button class='orderBtn' data-size='large' data-name="{{Sub.name}}" data-price={{Sub.large}}>{{Sub.large}}</button></span> 
 {% endfor %}
 </ul>
 <h2>Pasta</h2>
@@ -55,6 +80,7 @@
 
 {% for Pasta in Pasta %}
     <li>{{ Pasta.name }}</li>
+    <span>Price : <button class='orderBtn' data-size='price' data-name="{{Pasta.name}}" data-price={{Pasta.price}}>{{Pasta.price}}</button></span> 
 {% endfor %}
 </ul>
 <h2>Salads</h2>
@@ -62,6 +88,7 @@
 
 {% for Salad in Salads %}
     <li>{{ Salad.name }}</li>
+    <span>Price : <button class='orderBtn' data-size='price' data-name="{{Salad.name}}" data-price={{Salad.price}}>{{Salad.price}}</button></span> 
 {% endfor %}
 </ul>
 <h2>Dinner_Platters</h2>
@@ -69,32 +96,223 @@
 
 {% for Dinner_platter in Dinner_Platters %}
     <li>{{ Dinner_platter.name }}</li>
-    <span>S : <button class='orderBtn' data-size='small' data-name="{{Dinner_platter.name}}">{{Dinner_platter.small}}</button></span> 
-    <span>L : <button class='orderBtn' data-size='large' data-name="{{Dinner_platter.name}}">{{Dinner_platter.large}}</button></span> 
+    <span>S : <button class='orderBtn' data-size='small' data-name="{{Dinner_platter.name}}" data-price={{Dinner_platter.small}}>{{Dinner_platter.small}}</button></span> 
+    <span>L : <button class='orderBtn' data-size='large' data-name="{{Dinner_platter.name}}" data-price={{Dinner_platter.large}}>{{Dinner_platter.large}}</button></span> 
     
 {% endfor %}
 </ul>
 </div>
 
-  <script type="text/javascript">
-  console.log('hhihih')
-  //var a =
-  //console.log( {{ hihi }})
+<div class='box2'>
+<h1>Shopping Cart</h1>
 
-  var shoppingCart;
+<ul id='orders'>
+
+</ul>
+<h3>Toppings</h3>
+<ul id='toppings'>
+
+</ul>
+
+<h2>Total Price : $<span id='totalPrice'></span></h2>
+<button id='resetBtn' >Reset</button>
+<form action="{% url 'orders:menu_order'  %}" method="post" onsubmit='SubmitFunction()' >
+ {% csrf_token %} 
+
+ <input id='menus' name='menus' type="text">
+
+ <input id='topping' name='topping' type="text">
+
+ <input id='price' name='price' type="text">
+
+<input type="submit" value='Order'>
+</form>
+</div>
+
+</div>
+
+
+  <script type="text/javascript">
+  
+
+
+
+
+
+
+
+
+
+  if(window.localStorage.getItem('shoppingCart')){
+    var shoppingCart= JSON.parse(window.localStorage.getItem('shoppingCart'));
+  } else {
+    var shoppingCart= [];
+  }
+
+  if(window.localStorage.getItem('toppingList')){
+    var toppingList = JSON.parse(window.localStorage.getItem('toppingList'));
+  } else {
+    var toppingList= [];
+  }
+  
+  
+
+
+  var orderUl = document.getElementById('orders');
+  var toppingUl = document.getElementById('toppings');
+  var totalPrice = document.getElementById('totalPrice');
+
+
+
+  var resetBtn = document.getElementById('resetBtn')
+  resetBtn.addEventListener('click',()=>{
+       ResetShoppingCart();
+      })
+
+  //var orderBtn = document.getElementById('orderBtn')
+  {% comment %} orderBtn.addEventListener('click',()=>{
+       MakeOrder();
+      }) {% endcomment %}
+
+  
+  const SubmitFunction = () => {
+    
+    console.log('wehfiwehfoweh')
+    var menus = document.getElementById('menus')
+    shoppingCart.map((item,index) => {
+
+      menus.value +=  item.name + " | " 
+    })
+
+    var topping = document.getElementById('topping');
+    toppingList.map((item,index) => {
+      
+      topping.value += item.name + " | "
+
+    }) 
+    console.log(topping.value)
+
+    var price = document.getElementById('price');
+    price.value = ComputePrice();
+    confirm(menus.value + "    $" + price.value);
+  }
+
+  const ComputePrice = () => {
+    var sum = 0;
+    shoppingCart.map((item, index) => {
+      sum += +item.price;
+    });
+    totalPrice.innerText = sum;
+
+    return sum;
+  }
+
+  const ResetShoppingCart = () => {
+    shoppingCart = [];
+    toppingList = [];
+    totalPrice.innerText = 0;
+    while( orderUl.firstChild ){
+      orderUl.removeChild( orderUl.firstChild );
+    }
+
+    while( toppingUl.firstChild ){
+      toppingUl.removeChild( toppingUl.firstChild );
+    }
+  }
+
+  const UpdateShoppingCart = () => {
+    
+
+    shoppingCart.map((item, index)=> {
+
+      var tmpLi = document.createElement('li');
+      tmpLi.innerText = item.name + "      $" + item.price;
+      orderUl.appendChild(tmpLi)
+      
+    })
+
+  }
+
+   const UpdateToppingList = () => {
+    
+
+    toppingList.map((item, index)=> {
+
+      var tmpLi = document.createElement('li');
+      tmpLi.innerText = item.name;
+      toppingUl.appendChild(tmpLi)
+      
+    })
+
+  }
+
+  const AddShoppingCart = (item) => {
+
+    var tmpObj = {'name': item.dataset.name, 'price': item.dataset.price}
+    shoppingCart.push(tmpObj);
+     var tmpLi = document.createElement('li');
+      tmpLi.innerText = item.dataset.name+ "      $" + item.dataset.price;
+      orderUl.appendChild(tmpLi)
+
+      window.localStorage.setItem('shoppingCart', JSON.stringify(shoppingCart));
+  }
+
+  const AddToppingList = (item) => {
+
+    var tmpObj = {'name': item.dataset.name}
+    toppingList.push(tmpObj);
+     var tmpLi = document.createElement('li');
+      tmpLi.innerText = item.dataset.name;
+      toppingUl.appendChild(tmpLi)
+
+      window.localStorage.setItem('toppingList', JSON.stringify(toppingList));
+  
+  }
+
+  const MakeOrder = () => {
+    axios.defaults.xsrfCookieName = 'csrftoken'
+axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+      axios.post('/orders/menu_order', {
+        'test': 'hihi'
+      }).then((res)=>{
+        console.log(res)
+      }).catch((err)=>{
+        console.log(err)
+      })
+  }
 
 
   window.onload = () => {
     console.log('loaded')
 
+    UpdateShoppingCart();
+    UpdateToppingList();
+    ComputePrice();
+
     var btns = document.querySelectorAll(".orderBtn")
-    console.log(btns)
+   
     btns.forEach((item, index)=>{
-      console.log(item);
+     
       item.addEventListener('click',()=>{
-        console.log('clicked')
-        console.log(item.dataset.name)
-        console.log(item.dataset.size)   
+        //console.log(item.dataset.name)
+        //console.log(item.dataset.size)   
+        //console.log(item.dataset.price)
+        
+        console.log(shoppingCart);
+        AddShoppingCart(item);
+        ComputePrice();
+      })
+    })
+
+    var toppingsBtns = document.querySelectorAll(".toppingBtn");
+
+    toppingsBtns.forEach((item, index) => {
+
+      item.addEventListener('click', ()=> {
+
+        console.log(toppingList)
+        
+        AddToppingList(item);
       })
     })
   }
