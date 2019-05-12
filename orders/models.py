@@ -50,7 +50,7 @@ class Dinner_Platters(models.Model):
 
 class Order(models.Model):
     menus = models.CharField(max_length=200)
-    toppings = models.CharField(max_length=200)
+    topping = models.CharField(max_length=200)
     price = models.DecimalField(max_digits=2000, decimal_places=2)
     def __str__(self):
         return self.menus
